@@ -1,4 +1,5 @@
 import discord
+from discord.ext import commands
 import responses
 
 async def send_message(message, user_message, is_private):
@@ -11,6 +12,13 @@ async def send_message(message, user_message, is_private):
 
 def run_discord_bot():
     client = discord.Client(intents=discord.Intents.all())
+    bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
+
+    @bot.command()
+    async def html(ctx):
+        embed = discord.Embed(title="HTML", description="HTML is the standard markup language for creating Web pages.", color=0xeee657)
+        await ctx.send(embed=embed)
+
 
     @client.event
     async def on_ready():
@@ -18,19 +26,21 @@ def run_discord_bot():
 
     @client.event
     async def on_message(message):
+
+        username = message.author.name
+        user_message = message.content
+        channel = message.channel
         if message.author == client.user:
             return
+        
+        if user_message[0] == '?':
+            user_message = user_message[1:]
+            await send_message(message, user_message, is_private=True)
 
-        # if user_message[0] == '?':
-        #     user_message = user_message[1:]
-        #     await send_message(message, user_message, is_private=True)
+        else:
+            await send_message(message, user_message, is_private=False)
 
-        # else:
-        #     await send_message(message, user_message, is_private=False)
-
-        is_private = isinstance(message.channel, discord.DMChannel)
-        await send_message(message, message.content, is_private)
-        print(f'{message.author} sent a message in {message.channel}: {message.content}')
+        print(f'{username} sent a message in {channel}: {user_message}')
 
     TOKEN = 'MTA4ODM4MzA1MDc5MjA0NjYwMg.G-880l.gIbPhgdf8DGJesMVqzlyOEy2JQKlLPZLaEPxnY'
     

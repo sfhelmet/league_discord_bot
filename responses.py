@@ -1,11 +1,13 @@
 import random
 
 def handle_response(message):
-    message = message.lower()
+    p_message = message.lower()
 
-    if message == "hello":
+    if p_message == "hello":
         return "Hello there!"
-    elif message == "roll":
+    elif p_message == "roll":
         return str(random.randint(1, 6))
-    elif message == "!help":
+    elif p_message == "!help":
         return "`This is a code box`"
+    else:
+        return "I don't understand."
