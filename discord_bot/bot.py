@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import responses
+import config
 
 async def send_message(message, user_message, is_private):
     try:
@@ -24,25 +25,25 @@ def run_discord_bot():
     async def on_ready():
         print(f'{client.user} has connected to Discord!')
 
-    @client.event
-    async def on_message(message):
+    # @client.event
+    # async def on_message(message):
 
-        username = message.author.name
-        user_message = message.content
-        channel = message.channel
-        if message.author == client.user:
-            return
+    #     username = message.author.name
+    #     user_message = message.content
+    #     channel = message.channel
+    #     if message.author == client.user:
+    #         return
         
-        if user_message[0] == '?':
-            user_message = user_message[1:]
-            await send_message(message, user_message, is_private=True)
+    #     if user_message[0] == '?':
+    #         user_message = user_message[1:]
+    #         await send_message(message, user_message, is_private=True)
 
-        else:
-            await send_message(message, user_message, is_private=False)
+    #     else:
+    #         await send_message(message, user_message, is_private=False)
 
-        print(f'{username} sent a message in {channel}: {user_message}')
+    #     print(f'{username} sent a message in {channel}: {user_message}')
 
-    TOKEN = 'MTA4ODM4MzA1MDc5MjA0NjYwMg.G-880l.gIbPhgdf8DGJesMVqzlyOEy2JQKlLPZLaEPxnY'
+    TOKEN = config.DISCORD_KEY
     
     client.run(TOKEN)
     

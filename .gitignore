@@ -1,4 +1,4 @@
 Pipfile.lock
-backend/config.py
+config.py
 *.pyc
-*.png
+*.png   
