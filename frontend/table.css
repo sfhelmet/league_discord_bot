@@ -1,0 +1,29 @@
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 8px;
+}
+
+/* tr:nth-child(even) {
+  background-color: #F8FAFC;
+  /* display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+} */
+
+tr {
+    background-color: #F8FAFC;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    /* display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px; */
+}

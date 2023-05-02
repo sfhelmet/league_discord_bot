@@ -4,7 +4,7 @@ import random
 import discord
 from discord.ext import commands
 from tabulate import tabulate
-from api_calls import get_rank_by_summoner_name, sort_ranks
+from api_calls import get_rank_by_summoner_name
 
 
 '''
@@ -33,4 +33,5 @@ async def table(ctx):
 
 if __name__ == '__main__':
     bot.run(config.DISCORD_KEY)
+    print(f'{bot.user} has connected to Discord!')
     
