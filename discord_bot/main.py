@@ -1,6 +1,8 @@
 # import bot
+from multiprocessing import Process, Queue, Event
 import config
 import random
+import time
 import discord
 from discord.ext import commands
 from tabulate import tabulate
@@ -17,7 +19,23 @@ summoner_names = config.SUMMONER_NAMES
 
 @bot.command()
 async def table(ctx):
+    queue = Queue()
+
+    loading_embed = discord.Embed(title='Retrieving Data', description='Processing your request', color=discord.Color.blue())
+    loading_message = await ctx.send(embed=loading_embed)
+
+    get_process = Process(target=get_data, args=(queue,))
+    get_process.start()
+    get_process.join()
+    table = queue.get()
+
+    await loading_message.delete()
+    await ctx.message.delete()
     
+    await ctx.send(f'```{table}```')
+    # await ctx.send(file=discord.File('./screen.png'))
+
+def get_data(queue):
     data = []
     for i in range(len(summoner_names)):
         data.append(get_rank_by_summoner_name(summoner_names[i]))
@@ -25,11 +43,10 @@ async def table(ctx):
     print(data)
 
     sorted_data = sorted(data, key=lambda x: (["MASTER","DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE", "IRON"].index(x[1].split()[0]), 
-                                                {"I": 1, "II": 2, "III": 3, "IV": 4, "V": 5}[x[1].split()[1]], 
-                                                x[2]),)
-    table = tabulate(sorted_data, headers=['Summoner Name', 'Rank', 'LP'], tablefmt='orgtbl')
-
-    await ctx.send(f'```{table}```')
+                                                {"I": 1, "II": 2, "III": 3, "IV": 4}[x[1].split()[1]], 
+                                                100 - x[2]),)
+    
+    queue.put(tabulate(sorted_data, headers=['Summoner Name', 'Rank', 'LP'], tablefmt='orgtbl'))
 
 if __name__ == '__main__':
     bot.run(config.DISCORD_KEY)
